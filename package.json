@@ -9,7 +9,7 @@
     "test": "ng test",
     "capacitor": "ng build && cap sync",
     "ios": "npm run capacitor && cap run ios",
-    "android": "npm run capacitor && cap run android"
+    "android": "npm run capacitor"
   },
   "private": true,
   "dependencies": {

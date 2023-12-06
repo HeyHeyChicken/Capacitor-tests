@@ -1,18 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { Geolocation, Position } from '@capacitor/geolocation';
-import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
-import { Device, DeviceInfo } from '@capacitor/device';
+import { Geolocation } from '@capacitor/geolocation';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Device } from '@capacitor/device';
 import { Dialog } from '@capacitor/dialog';
 import { Haptics } from '@capacitor/haptics';
 import { Keyboard } from '@capacitor/keyboard';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { ConnectionStatus, Network } from '@capacitor/network';
+import { Network } from '@capacitor/network';
 import { Toast } from '@capacitor/toast';
 import { AccelListenerEvent, Motion, RotationRate } from '@capacitor/motion';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { PluginListenerHandle } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
@@ -48,7 +47,7 @@ export class AppComponent {
 
   protected async showNetworkInfos(): Promise<void> {
     await Dialog.alert({
-      title: 'Device infos',
+      title: 'Network infos',
       message: JSON.stringify(await Network.getStatus()),
     });
   }
