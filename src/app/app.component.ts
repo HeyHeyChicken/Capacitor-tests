@@ -12,6 +12,7 @@ import { ConnectionStatus, Network } from '@capacitor/network';
 import { Toast } from '@capacitor/toast';
 import { AccelListenerEvent, Motion, RotationRate } from '@capacitor/motion';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { PluginListenerHandle } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
@@ -23,24 +24,127 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 export class AppComponent {
   //#region Attributes
 
-  protected currentPosition?: Position;
-  protected deviceInfo?: DeviceInfo;
-  protected name?: string;
   protected accelerometer?: AccelListenerEvent;
   protected rotation?: RotationRate;
-  protected photo?: Photo;
-  protected network?: ConnectionStatus;
   protected photoURL?: string;
 
   //#endregion
-  
-  constructor() {
-    this.getCurrentPosition();
-    this.getDeviceInfo();
-    this.getNetworkInfo();
-  }
 
   //#region Functions
+
+  protected async showCurrentPosition(): Promise<void> {
+    await Dialog.alert({
+      title: 'Current position',
+      message: JSON.stringify(await Geolocation.getCurrentPosition()),
+    });
+  }
+
+  protected async showDeviceInfos(): Promise<void> {
+    await Dialog.alert({
+      title: 'Device infos',
+      message: JSON.stringify(await Device.getInfo()),
+    });
+  }
+
+  protected async showNetworkInfos(): Promise<void> {
+    await Dialog.alert({
+      title: 'Device infos',
+      message: JSON.stringify(await Network.getStatus()),
+    });
+  }
+
+  protected async testDialog(): Promise<void> {
+    const { value, cancelled } = await Dialog.prompt({
+      title: 'Hello',
+      message: `What's your name?`,
+    });
+    if(!cancelled){
+      await Dialog.alert({
+        title: 'Result',
+        message: 'So, you name is :"' + value + '" right?',
+      });
+    }
+  }
+
+  protected testVibration(): void{
+    Haptics.vibrate();
+  }
+
+  protected openKeyboard(): void {
+    Keyboard.show();
+  }
+
+  protected showToast(): void{
+    this._toast("Hello, I'm a toast!");
+  }
+
+  protected async askPhoto(): Promise<void>{
+    const PHOTO = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: true,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Camera
+    });
+    this.photoURL = PHOTO.webPath;
+  }
+
+  protected async createFile(): Promise<void>{
+    const { value, cancelled } = await Dialog.prompt({
+      title: 'Write a file',
+      message: `What do you want to store?`,
+    });
+    if(!cancelled){
+      await Filesystem.writeFile({
+        path: 'secrets/text.txt',
+        data: value,
+        directory: Directory.External,
+        encoding: Encoding.UTF8,
+        recursive: true
+      }).then(result => {
+        this._toast("The file is created!");
+      }).catch(err => {
+        this._toast("Error : " + JSON.stringify(err));
+      });
+    }
+  }
+
+  protected async readFile(): Promise<void>{
+    const contents = await Filesystem.readFile({
+      path: 'secrets/text.txt',
+      directory: Directory.External,
+      encoding: Encoding.UTF8,
+    }).then(result => {
+      this._toast(JSON.stringify(result));
+    }).catch(err => {
+      console.log(err);
+      this._toast("Error : " + JSON.stringify(err));
+    });
+  }
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   protected jsonPrint(value: any): string{
     return JSON.stringify(value);
@@ -68,38 +172,6 @@ export class AppComponent {
     });
   }
 
-  protected async getCurrentPosition(): Promise<void>{
-    this.currentPosition = await Geolocation.getCurrentPosition();
-  }
-
-  protected async getNetworkInfo(): Promise<void>{
-    this.network = await Network.getStatus();
-  }
-
-  protected async getDeviceInfo(): Promise<void>{
-    this.deviceInfo = await Device.getInfo();
-  }
-
-  protected async showAlert(): Promise<void> {
-    const { value, cancelled } = await Dialog.prompt({
-      title: 'Hello',
-      message: `What's your name?`,
-    });
-    this.name = value;
-  };
-
-  protected async vibrate(): Promise<void> {
-    await Haptics.vibrate();
-  };
-
-  protected showKeyboard(): void {
-    Keyboard.show();
-  };
-
-  protected showToast(){
-    this._toast("Hello, I'm a toast");
-  }
-
   protected showNotification(): void {
     LocalNotifications.schedule({
       notifications: [
@@ -111,55 +183,6 @@ export class AppComponent {
       ]
     })
   };
-
-  protected async openCamera(): Promise<void>{
-    this.photo = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: true,
-      resultType: CameraResultType.Uri,
-      source: CameraSource.Camera
-    });
-    this.photoURL = this.photo.webPath;
-  }
-
-  protected async createFile(): Promise<void>{
-    // Get value
-    /*
-    const { value, cancelled } = await Dialog.prompt({
-      title: 'Hello',
-      message: `What's your name?`,
-    });
-    */
-
-    // Make file
-      await Filesystem.writeFile({
-        path: 'secrets/text.txt',
-        data: "toto",
-        directory: Directory.External,
-        encoding: Encoding.UTF8,
-        recursive: true
-      }).then(result => {
-        console.log(result)
-        this._toast("The file is created");
-      }).catch(err => {
-        console.log(err);
-        this._toast("Error : " + JSON.stringify(err));
-      });
-  }
-
-  protected async readFile(): Promise<void>{
-    const contents = await Filesystem.readFile({
-      path: 'secrets/text.txt',
-      directory: Directory.External,
-      encoding: Encoding.UTF8,
-    }).then(result => {
-      console.log(result)
-      this._toast(JSON.stringify(contents));
-    }).catch(err => {
-      console.log(err);
-      this._toast("Error : " + JSON.stringify(err));
-    });
-  }
 
   private _toast(value: string){
     Toast.show({

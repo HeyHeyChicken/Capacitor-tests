@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "capacitor": "ng build && cap sync"
+    "capacitor": "ng build && cap sync",
+    "ios": "npm run capacitor && cap run ios",
+    "android": "npm run capacitor && cap run android"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +31,7 @@
     "@capacitor/filesystem": "^5.1.4",
     "@capacitor/geolocation": "^5.0.6",
     "@capacitor/haptics": "^5.0.6",
+    "@capacitor/ios": "^5.5.1",
     "@capacitor/keyboard": "^5.0.6",
     "@capacitor/local-notifications": "^5.0.6",
     "@capacitor/motion": "^5.0.6",
