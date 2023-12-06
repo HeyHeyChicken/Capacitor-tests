@@ -54,6 +54,16 @@ I was able to experiment with a good part of the functionalities offered by this
 <td>🟢</td>
 <td>🟢</td>
 </tr>
+<tr>
+<th>Camera</th>
+<td>🟢</td>
+<td>🟢</td>
+</tr>
+<tr>
+<th>File</th>
+<td>🟢</td>
+<td>🟢</td>
+</tr>
 </tbody>
 </table>
 Don't hesitate to try it out for yourself.
