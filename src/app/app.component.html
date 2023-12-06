@@ -1,0 +1,32 @@
+<router-outlet></router-outlet>
+<p class="title green">Current position: </p>
+{{ jsonPrint(currentPosition) }}
+<p class="title green">Device infos: </p>
+{{ jsonPrint(deviceInfo) }}
+<p class="title green">Network: </p>
+{{ jsonPrint(network) }}
+<p class="title green">Dialog: </p>
+<button (click)="showAlert()">Ask name</button>
+<span>{{ name }}</span>
+<p class="title green">Vibrate: </p>
+<button (click)="vibrate()">Vibrate</button>
+<p class="title green">Keyboard: </p>
+<button (click)="showKeyboard()">Show keyboard</button>
+<p class="title green">Toast: </p>
+<button (click)="showToast()">Show toast</button>
+<p class="title green">Photo: </p>
+<button (click)="openCamera()">Open camera</button>
+{{ jsonPrint(photo) }}
+<img src="{{ photoURL }}" />
+<p class="title">Files: </p>
+<button (click)="createFile()">Create file</button>
+<button (click)="readFile()">Read file</button>
+
+
+
+<p class="title red">Accelerometer: </p>
+<button (click)="requestPermissions()">Request permission</button>
+{{ jsonPrint(accelerometer) }}
+{{ jsonPrint(rotation) }}
+<p class="title red">Notification: </p>
+<button (click)="showNotification()">Show notification</button>

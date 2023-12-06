@@ -1,0 +1,16 @@
+.title{
+    width: 100%;
+    background-color: black;
+    color: white;
+
+    &.green{
+        background-color: green;
+    }
+
+    &.red{
+        background-color: red;
+    }
+}
+p{
+    margin: 0;
+}
