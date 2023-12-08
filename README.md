@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/HeyHeyChicken/Capacitor-tests/main/github/logo.png" alt="Capacitor">
+<img src="https://raw.githubusercontent.com/HeyHeyChicken/Capacitor-tests/main/.github/logo.png" alt="Capacitor">
 
 </div>
 
